@@ -1,0 +1,579 @@
+/* react-doctor 面板样式：shadcn/ui（new-york · zinc）设计体系的作用域移植，
+   与 kimi-lb 同一套视觉语言。插件 CSS 被宿主包进 @layer ccgui-plugins
+   （优先级最低），因此全部规则挂在 .rd- 前缀类上、不碰任何裸元素选择器；
+   明暗双套 token 跟随宿主根节点 .dark 类切换。 */
+.react-doctor-root {
+  height: 100%;
+  overflow-y: auto;
+  --rd-fg: #18181b;
+  --rd-dim: #71717a;
+  --rd-card: #ffffff;
+  --rd-line: #e4e4e7;
+  --rd-line-strong: #d4d4d8;
+  --rd-inset: #f4f4f5;
+  --rd-primary: #18181b;
+  --rd-primary-hover: #3f3f46;
+  --rd-primary-fg: #fafafa;
+  --rd-ring: rgba(24, 24, 27, 0.16);
+  --rd-ok: #16a34a;
+  --rd-ok-soft: rgba(22, 163, 74, 0.12);
+  --rd-warn: #d97706;
+  --rd-warn-soft: rgba(217, 119, 6, 0.14);
+  --rd-bad: #dc2626;
+  --rd-bad-soft: rgba(220, 38, 38, 0.1);
+  --rd-track: #ececef;
+  --rd-code-bg: #f4f4f5;
+  --rd-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --rd-radius: 10px;
+  --rd-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.dark .react-doctor-root {
+  --rd-fg: #fafafa;
+  --rd-dim: #a1a1aa;
+  --rd-card: rgba(255, 255, 255, 0.035);
+  --rd-line: rgba(255, 255, 255, 0.13);
+  --rd-line-strong: rgba(255, 255, 255, 0.24);
+  --rd-inset: rgba(255, 255, 255, 0.07);
+  --rd-primary: #fafafa;
+  --rd-primary-hover: #d4d4d8;
+  --rd-primary-fg: #18181b;
+  --rd-ring: rgba(255, 255, 255, 0.2);
+  --rd-ok: #4ade80;
+  --rd-ok-soft: rgba(74, 222, 128, 0.14);
+  --rd-warn: #fbbf24;
+  --rd-warn-soft: rgba(251, 191, 36, 0.14);
+  --rd-bad: #f87171;
+  --rd-bad-soft: rgba(248, 113, 113, 0.13);
+  --rd-track: rgba(255, 255, 255, 0.1);
+  --rd-code-bg: rgba(255, 255, 255, 0.07);
+  --rd-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- 布局骨架 ---------- */
+
+.rd-root {
+  padding: 18px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--rd-fg);
+}
+
+.rd-dim { color: var(--rd-dim); }
+
+/* ---------- 页头 ---------- */
+
+.rd-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.rd-head-text { min-width: 0; }
+
+.rd-head h2 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.rd-head-sub {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  color: var(--rd-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl; /* 长路径省略号留在头部，尾部（项目名）可见 */
+  text-align: left;
+}
+
+/* ---------- 徽章（shadcn badge） ---------- */
+
+.rd-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid var(--rd-line);
+  background: var(--rd-card);
+  color: var(--rd-dim);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  flex: none;
+}
+
+.rd-badge svg { width: 12px; height: 12px; }
+
+.rd-badge-ok {
+  color: var(--rd-ok);
+  border-color: transparent;
+  background: var(--rd-ok-soft);
+}
+
+.rd-badge-bad {
+  color: var(--rd-bad);
+  border-color: transparent;
+  background: var(--rd-bad-soft);
+}
+
+.rd-badge-run {
+  color: var(--rd-warn);
+  border-color: transparent;
+  background: var(--rd-warn-soft);
+}
+
+/* ---------- 按钮（shadcn button 变体） ---------- */
+
+.rd-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--rd-fg);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.rd-btn svg { width: 14px; height: 14px; flex: none; }
+
+.rd-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--rd-ring);
+}
+
+.rd-btn:disabled { opacity: 0.55; cursor: default; pointer-events: none; }
+
+.rd-btn-primary {
+  background: var(--rd-primary);
+  color: var(--rd-primary-fg);
+  box-shadow: var(--rd-shadow);
+}
+.rd-btn-primary:hover { background: var(--rd-primary-hover); }
+
+.rd-btn-ghost { color: var(--rd-dim); }
+.rd-btn-ghost:hover { background: var(--rd-inset); color: var(--rd-fg); }
+
+.rd-btn-lg {
+  width: 100%;
+  height: 34px;
+  font-size: 12.5px;
+  border-radius: 9px;
+}
+
+.rd-btn-sm {
+  height: 24px;
+  padding: 0 8px;
+  gap: 5px;
+  font-size: 11px;
+  border-radius: 7px;
+}
+.rd-btn-sm svg { width: 12px; height: 12px; }
+
+/* ---------- 运行区 ---------- */
+
+.rd-run { display: flex; flex-direction: column; gap: 6px; }
+
+.rd-run-hint {
+  margin: 0;
+  font-size: 11px;
+  color: var(--rd-dim);
+  text-align: center;
+}
+
+.rd-spin { animation: rd-rotate 1s linear infinite; }
+
+@keyframes rd-rotate {
+  to { transform: rotate(360deg); }
+}
+
+/* ---------- 卡片（shadcn card） ---------- */
+
+.rd-card {
+  background: var(--rd-card);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+  box-shadow: var(--rd-shadow);
+}
+
+/* ---------- 评分卡 ---------- */
+
+.rd-score {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+}
+
+.rd-ring { position: relative; width: 84px; height: 84px; flex: none; }
+
+.rd-ring-svg { width: 84px; height: 84px; transform: rotate(-90deg); }
+
+.rd-ring-track {
+  fill: none;
+  stroke: var(--rd-track);
+  stroke-width: 7;
+}
+
+.rd-ring-value {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.6s ease;
+}
+
+.rd-tone-ok { color: var(--rd-ok); }
+.rd-tone-warn { color: var(--rd-warn); }
+.rd-tone-bad { color: var(--rd-bad); }
+.rd-tone-none { color: var(--rd-dim); }
+
+.rd-ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  color: var(--rd-fg);
+}
+
+.rd-ring-score { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+
+.rd-ring-label {
+  font-size: 9.5px;
+  color: var(--rd-dim);
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rd-score-side { min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+
+.rd-score-title { font-size: 12px; font-weight: 600; }
+
+.rd-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+
+.rd-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--rd-dim);
+}
+
+.rd-stat b { font-size: 15px; font-weight: 650; color: var(--rd-fg); }
+
+.rd-stat-bad, .rd-stat-bad b { color: var(--rd-bad); }
+.rd-stat-warn, .rd-stat-warn b { color: var(--rd-warn); }
+
+.rd-score-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  color: var(--rd-dim);
+}
+
+.rd-score-meta svg { width: 12px; height: 12px; }
+
+/* ---------- 全绿状态 ---------- */
+
+.rd-clean {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  color: var(--rd-ok);
+  font-size: 12px;
+}
+
+.rd-clean p { margin: 0; }
+
+.rd-clean-icon { width: 16px; height: 16px; flex: none; }
+
+/* ---------- 问题列表（shadcn accordion 风格） ---------- */
+
+.rd-findings-title {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 标题行：标题居左，「一键修复」按钮居右。 */
+.rd-findings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.rd-findings-head .rd-findings-title {
+  margin: 0;
+}
+
+.rd-files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rd-file {
+  background: var(--rd-card);
+  border: 1px solid var(--rd-line);
+  border-radius: var(--rd-radius);
+  box-shadow: var(--rd-shadow);
+  overflow: hidden;
+}
+
+.rd-file-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  color: var(--rd-fg);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.rd-file-head:hover { background: var(--rd-inset); }
+
+.rd-file-head:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--rd-ring);
+}
+
+.rd-file-chev {
+  width: 13px;
+  height: 13px;
+  flex: none;
+  color: var(--rd-dim);
+  transition: transform 0.15s;
+  transform: rotate(-90deg);
+}
+
+.rd-file-open .rd-file-chev,
+.rd-file-chev-open { transform: rotate(0deg); }
+
+.rd-file-icon { width: 13px; height: 13px; flex: none; color: var(--rd-dim); }
+
+.rd-file-path {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--rd-mono);
+  font-size: 11.5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  direction: rtl;
+  text-align: left;
+}
+
+.rd-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  flex: none;
+}
+
+.rd-count-bad { color: var(--rd-bad); background: var(--rd-bad-soft); }
+.rd-count-warn { color: var(--rd-warn); background: var(--rd-warn-soft); }
+
+.rd-file-body {
+  margin: 0;
+  padding: 4px 12px 10px;
+  list-style: none;
+  border-top: 1px solid var(--rd-line);
+  display: flex;
+  flex-direction: column;
+}
+
+.rd-issue { padding: 9px 0; }
+
+.rd-issue + .rd-issue { border-top: 1px solid var(--rd-line); }
+
+.rd-issue-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rd-sev {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 5px;
+  font-size: 10px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.rd-sev svg { width: 11px; height: 11px; }
+
+.rd-sev-bad { color: var(--rd-bad); background: var(--rd-bad-soft); }
+.rd-sev-warn { color: var(--rd-warn); background: var(--rd-warn-soft); }
+
+.rd-issue-pos { font-size: 10.5px; color: var(--rd-dim); white-space: nowrap; }
+
+.rd-issue-rule {
+  font-family: var(--rd-mono);
+  font-size: 10.5px;
+  background: var(--rd-code-bg);
+  border-radius: 5px;
+  padding: 2px 6px;
+  color: var(--rd-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.rd-issue-title {
+  margin: 5px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.rd-issue-msg {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  color: var(--rd-dim);
+  word-break: break-word;
+}
+
+.rd-issue-help {
+  margin: 5px 0 0;
+  font-size: 11px;
+  color: var(--rd-dim);
+  background: var(--rd-inset);
+  border-left: 2px solid var(--rd-line-strong);
+  border-radius: 0 6px 6px 0;
+  padding: 6px 9px;
+  word-break: break-word;
+}
+
+.rd-issue-more {
+  padding: 8px 0 2px;
+  font-size: 11px;
+  color: var(--rd-dim);
+  text-align: center;
+}
+
+/* ---------- 原始输出 ---------- */
+
+.rd-raw { overflow: hidden; }
+
+.rd-raw-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  color: var(--rd-fg);
+  font-size: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.rd-raw-head:hover { background: var(--rd-inset); }
+
+.rd-raw-head span:first-of-type { flex: 1; min-width: 0; }
+
+.rd-raw-copy { flex: none; }
+
+.rd-raw-body {
+  margin: 0;
+  padding: 10px 12px;
+  border-top: 1px solid var(--rd-line);
+  background: var(--rd-code-bg);
+  font-family: var(--rd-mono);
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--rd-dim);
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* ---------- 空态 / 错误 / 页脚 ---------- */
+
+.rd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  padding: 34px 20px;
+  color: var(--rd-dim);
+}
+
+.rd-empty h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rd-fg);
+}
+
+.rd-empty p { margin: 0; font-size: 11.5px; max-width: 300px; }
+
+.rd-empty-icon { width: 34px; height: 34px; opacity: 0.5; margin-bottom: 4px; }
+
+.rd-alert {
+  border: 1px solid var(--rd-bad-soft);
+  background: var(--rd-bad-soft);
+  color: var(--rd-bad);
+  border-radius: var(--rd-radius);
+  padding: 9px 14px;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.rd-foot {
+  font-size: 10.5px;
+  color: var(--rd-dim);
+  text-align: center;
+}
+
+.rd-trunc-note {
+  margin: -2px 0 8px;
+  font-size: 11px;
+  color: var(--rd-warn);
+}
