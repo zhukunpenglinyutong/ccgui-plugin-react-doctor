@@ -14,6 +14,18 @@ pnpm build    # 产出 main.js + styles.css（manifest.json 本在仓库根）
 pnpm validate # manifest 校验
 ```
 
+## 界面
+
+![体检报告面板：浅色](docs/screenshot-1.png)
+
+![体检报告面板：深色](docs/screenshot-2.png)
+
+截图由 `preview/` 浏览器 harness 渲染真实面板（mock 宿主返回罐头报告）生成：
+
+```bash
+pnpm dev   # vite --config vite.preview.config.ts，浏览器打开 ports 5199
+```
+
 ## 安装
 
 宿主 App：设置 → 插件 → 从本地目录安装 → 选择本仓库根目录。
