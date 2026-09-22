@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>React Doctor · 插件预览</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body, #app { height: 100%; margin: 0; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: #ececef;
+        color: #18181b;
+      }
+      body.dark { background: #09090b; color: #fafafa; }
+
+      .shell { height: 100%; display: flex; flex-direction: column; }
+      .topbar {
+        display: flex; align-items: center; gap: 10px;
+        padding: 10px 16px;
+        font-size: 13px; font-weight: 600;
+        background: #ffffff; border-bottom: 1px solid #e4e4e7;
+      }
+      body.dark .topbar { background: #18181b; border-color: rgba(255,255,255,0.13); }
+      .topbar .tag {
+        font-size: 10.5px; font-weight: 500; color: #71717a;
+        border: 1px solid #e4e4e7; border-radius: 999px; padding: 2px 8px;
+      }
+      body.dark .topbar .tag { color: #a1a1aa; border-color: rgba(255,255,255,0.13); }
+      .topbar button {
+        margin-left: auto; font-size: 12px; padding: 4px 10px; cursor: pointer;
+        border: 1px solid #e4e4e7; border-radius: 6px; background: #fff; color: inherit;
+      }
+      body.dark .topbar button { background: transparent; border-color: rgba(255,255,255,0.24); }
+
+      .stage { flex: 1; min-height: 0; display: flex; gap: 16px; padding: 16px; }
+      /* 模拟宿主聊天区占位 */
+      .chat-mock {
+        flex: 1; min-width: 0; border: 1px dashed #d4d4d8; border-radius: 10px;
+        display: flex; flex-direction: column; overflow: hidden;
+        background: #ffffff;
+      }
+      body.dark .chat-mock { background: rgba(255,255,255,0.035); border-color: rgba(255,255,255,0.13); }
+      .chat-mock .chat-fill {
+        flex: 1; display: flex; align-items: center; justify-content: center;
+        color: #a1a1aa; font-size: 12px;
+      }
+      /* composer 草稿区：插件的「一键修复」写入这里 */
+      .composer {
+        margin: 12px; border: 1px solid #e4e4e7; border-radius: 10px; padding: 10px 12px;
+        font-size: 12px; white-space: pre-wrap; word-break: break-word;
+        max-height: 180px; overflow-y: auto; color: #3f3f46;
+      }
+      body.dark .composer { border-color: rgba(255,255,255,0.13); color: #d4d4d8; }
+      .composer .ph { color: #a1a1aa; }
+
+      /* 模拟宿主右侧面板 */
+      .panel-mock {
+        width: 400px; flex: none; display: flex; flex-direction: column; min-height: 0;
+        border: 1px solid #e4e4e7; border-radius: 10px; overflow: hidden;
+        background: #fafafa;
+      }
+      body.dark .panel-mock { background: #101013; border-color: rgba(255,255,255,0.13); }
+      .panel-tab-strip {
+        display: flex; align-items: center; gap: 6px;
+        padding: 8px 12px; font-size: 12px; font-weight: 600;
+        border-bottom: 1px solid #e4e4e7; background: #ffffff;
+      }
+      body.dark .panel-tab-strip { background: #18181b; border-color: rgba(255,255,255,0.13); }
+      .panel-tab-strip svg { width: 14px; height: 14px; }
+      #panel { flex: 1; min-height: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/main.tsx"></script>
+  </body>
+</html>

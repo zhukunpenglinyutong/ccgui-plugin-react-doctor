@@ -35,7 +35,7 @@ export interface Copy {
   statFiles: string;
   statElapsed: (sec: string) => string;
   noIssues: string;
-  findingsTitle: (n: number) => string;
+  findingsTitle: string;
   moreItems: (n: number) => string;
   lineCol: (line: number, col: number) => string;
   rawTitle: string;
@@ -51,6 +51,9 @@ export interface Copy {
   webOnlyTitle: string;
   webOnlyBody: string;
   fixBtn: string;
+  fixOneBtn: string;
+  /** 单条修复提示词开头（问题定位与说明之前）。 */
+  fixOneHeader: string;
   fixApplied: string;
   /** 修复提示词开头（问题清单之前），带评分与统计。 */
   fixPromptHeader: (score: number | null, total: number, errors: number, warnings: number) => string;
@@ -80,7 +83,7 @@ export function copy(locale: string): Copy {
       statFiles: "涉及文件",
       statElapsed: (sec) => `耗时 ${sec}s`,
       noIssues: "未发现问题，代码很健康。",
-      findingsTitle: (n) => `问题列表（${n}）`,
+      findingsTitle: "问题列表",
       moreItems: (n) => `…还有 ${n} 条未显示`,
       lineCol: (line, col) => `行 ${line}:${col}`,
       rawTitle: "原始输出",
@@ -96,6 +99,8 @@ export function copy(locale: string): Copy {
       webOnlyTitle: "仅桌面端可用",
       webOnlyBody: "代码体检需要在本机执行 npx 进程，Web 客户端不支持。",
       fixBtn: "一键修复",
+      fixOneBtn: "修复",
+      fixOneHeader: "以下是 react-doctor 代码体检发现的一个问题：",
       fixApplied: "已填入输入框",
       fixPromptHeader: (score, total, errors, warnings) =>
         `以下是 react-doctor 代码体检发现的问题（健康评分 ${score ?? "—"}/100，共 ${total} 条：${errors} 错误 / ${warnings} 警告）：`,
@@ -122,7 +127,7 @@ export function copy(locale: string): Copy {
     statFiles: "Files",
     statElapsed: (sec) => `took ${sec}s`,
     noIssues: "No issues found. Codebase looks healthy.",
-    findingsTitle: (n) => `Findings (${n})`,
+    findingsTitle: "Findings",
     moreItems: (n) => `…${n} more not shown`,
     lineCol: (line, col) => `line ${line}:${col}`,
     rawTitle: "Raw output",
@@ -138,6 +143,8 @@ export function copy(locale: string): Copy {
     webOnlyTitle: "Desktop only",
     webOnlyBody: "Scanning runs a local npx process, unavailable in the web client.",
     fixBtn: "Fix all",
+    fixOneBtn: "Fix",
+    fixOneHeader: "Issue found by a react-doctor scan:",
     fixApplied: "Copied to composer",
     fixPromptHeader: (score, total, errors, warnings) =>
       `Issues found by a react-doctor scan (health score ${score ?? "—"}/100, ${total} total: ${errors} errors / ${warnings} warnings):`,

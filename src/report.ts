@@ -101,3 +101,12 @@ export function buildFixPrompt(
   parts.push(suffix);
   return parts.join("\n");
 }
+/** 单条修复提示词：文件 + 定位/规则 + 说明 + 结尾指令（suffix 的"上述"回指该问题）。 */
+export function buildSingleFixPrompt(file: string, d: Diagnostic, header: string, suffix: string): string {
+  const sev = d.severity === "error" ? "error" : "warn";
+  const parts: string[] = [header, "", file, "", `[${sev}] ${d.line}:${d.column} · ${d.plugin}/${d.rule} — ${d.title}`];
+  if (d.message && d.message !== d.title) parts.push(d.message);
+  if (d.help) parts.push(`→ ${d.help}`);
+  parts.push("", suffix);
+  return parts.join("\n");
+}

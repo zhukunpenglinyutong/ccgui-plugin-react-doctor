@@ -5,6 +5,8 @@
 .react-doctor-root {
   height: 100%;
   overflow-y: auto;
+  /* 窄面板适配用容器查询：面板宽度取决于宿主窗口/侧栏，而非视口。 */
+  container-type: inline-size;
   --rd-fg: #18181b;
   --rd-dim: #71717a;
   --rd-card: #ffffff;
@@ -53,10 +55,10 @@
 /* ---------- 布局骨架 ---------- */
 
 .rd-root {
-  padding: 18px 16px 24px;
+  padding: 20px 18px 28px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
   font-size: 13px;
   line-height: 1.5;
   color: var(--rd-fg);
@@ -169,6 +171,12 @@
 
 .rd-btn-ghost { color: var(--rd-dim); }
 .rd-btn-ghost:hover { background: var(--rd-inset); color: var(--rd-fg); }
+.rd-btn-outline {
+  border-color: var(--rd-line);
+  background: var(--rd-card);
+  box-shadow: var(--rd-shadow);
+}
+.rd-btn-outline:hover { background: var(--rd-inset); }
 
 .rd-btn-lg {
   width: 100%;
@@ -185,6 +193,14 @@
   border-radius: 7px;
 }
 .rd-btn-sm svg { width: 12px; height: 12px; }
+.rd-btn-xs {
+  height: 22px;
+  padding: 0 7px;
+  gap: 4px;
+  font-size: 10.5px;
+  border-radius: 6px;
+}
+.rd-btn-xs svg { width: 11px; height: 11px; }
 
 /* ---------- 运行区 ---------- */
 
@@ -217,24 +233,24 @@
 .rd-score {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 16px;
+  gap: 18px;
+  padding: 16px 18px;
 }
 
-.rd-ring { position: relative; width: 84px; height: 84px; flex: none; }
+.rd-ring { position: relative; width: 96px; height: 96px; flex: none; }
 
-.rd-ring-svg { width: 84px; height: 84px; transform: rotate(-90deg); }
+.rd-ring-svg { width: 96px; height: 96px; transform: rotate(-90deg); }
 
 .rd-ring-track {
   fill: none;
   stroke: var(--rd-track);
-  stroke-width: 7;
+  stroke-width: 8.5;
 }
 
 .rd-ring-value {
   fill: none;
   stroke: currentColor;
-  stroke-width: 7;
+  stroke-width: 8.5;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.6s ease;
 }
@@ -255,41 +271,58 @@
   color: var(--rd-fg);
 }
 
-.rd-ring-score { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.rd-ring-score { font-size: 26px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
 
 .rd-ring-label {
-  font-size: 9.5px;
+  font-size: 10px;
   color: var(--rd-dim);
-  max-width: 68px;
+  max-width: 76px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.rd-score-side { min-width: 0; display: flex; flex-direction: column; gap: 7px; }
+.rd-score-side { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 9px; }
 
-.rd-score-title { font-size: 12px; font-weight: 600; }
+.rd-score-title { font-size: 13px; font-weight: 600; }
+/* 概览卡顶行：标题居左，「运行体检」按钮居右。 */
+.rd-score-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 
 .rd-stats { display: flex; gap: 14px; flex-wrap: wrap; }
 
 .rd-stat {
   display: inline-flex;
-  align-items: baseline;
-  gap: 4px;
-  font-size: 11px;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
   color: var(--rd-dim);
 }
+.rd-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  flex: none;
+  margin-right: 2px;
+}
 
-.rd-stat b { font-size: 15px; font-weight: 650; color: var(--rd-fg); }
+.rd-dot-bad { background: var(--rd-bad); }
+.rd-dot-warn { background: var(--rd-warn); }
+.rd-dot-dim { background: var(--rd-dim); opacity: 0.5; }
 
-.rd-stat-bad, .rd-stat-bad b { color: var(--rd-bad); }
-.rd-stat-warn, .rd-stat-warn b { color: var(--rd-warn); }
+.rd-stat b { font-size: 16px; font-weight: 650; color: var(--rd-fg); }
 
 .rd-score-meta {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  row-gap: 2px;
   gap: 5px;
-  font-size: 11px;
+  font-size: 11.5px;
   color: var(--rd-dim);
 }
 
@@ -313,9 +346,21 @@
 /* ---------- 问题列表（shadcn accordion 风格） ---------- */
 
 .rd-findings-title {
-  margin: 0 0 8px;
-  font-size: 12px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
   font-weight: 600;
+}
+/* 标题旁的总数徽标（shadcn badge-secondary）。 */
+.rd-badge-count {
+  margin-left: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--rd-inset);
+  color: var(--rd-dim);
+  font-size: 11px;
+  font-weight: 500;
 }
 
 /* 标题行：标题居左，「一键修复」按钮居右。 */
@@ -324,33 +369,31 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  margin: 0 0 8px;
-}
-
-.rd-findings-head .rd-findings-title {
-  margin: 0;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--rd-line);
 }
 
 .rd-files {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 
+.rd-findings-card { overflow: hidden; }
+
+/* 文件行不再是独立卡片：问题卡内的分隔列表项。 */
 .rd-file {
-  background: var(--rd-card);
-  border: 1px solid var(--rd-line);
-  border-radius: var(--rd-radius);
-  box-shadow: var(--rd-shadow);
-  overflow: hidden;
+  background: none;
 }
+
+.rd-file + .rd-file { border-top: 1px solid var(--rd-line); }
 
 .rd-file-head {
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 9px 12px;
+  padding: 11px 16px;
   border: none;
   background: transparent;
   color: var(--rd-fg);
@@ -385,7 +428,7 @@
   flex: 1;
   min-width: 0;
   font-family: var(--rd-mono);
-  font-size: 11.5px;
+  font-size: 12px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -397,11 +440,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 20px;
-  height: 18px;
-  padding: 0 6px;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 7px;
   border-radius: 999px;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 600;
   flex: none;
 }
@@ -411,14 +454,17 @@
 
 .rd-file-body {
   margin: 0;
-  padding: 4px 12px 10px;
+  padding: 0 0 4px;
   list-style: none;
   border-top: 1px solid var(--rd-line);
   display: flex;
   flex-direction: column;
 }
 
-.rd-issue { padding: 9px 0; }
+.rd-issue { display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 16px; }
 
 .rd-issue + .rd-issue { border-top: 1px solid var(--rd-line); }
 
@@ -428,24 +474,12 @@
   gap: 8px;
   flex-wrap: wrap;
 }
+.rd-issue-icon { flex: none; margin-top: 1px; display: inline-flex; }
+.rd-issue-icon svg { width: 14px; height: 14px; }
+.rd-issue-icon-bad { color: var(--rd-bad); }
+.rd-issue-icon-warn { color: var(--rd-warn); }
 
-.rd-sev {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  height: 18px;
-  padding: 0 7px;
-  border-radius: 5px;
-  font-size: 10px;
-  font-weight: 650;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.rd-sev svg { width: 11px; height: 11px; }
-
-.rd-sev-bad { color: var(--rd-bad); background: var(--rd-bad-soft); }
-.rd-sev-warn { color: var(--rd-warn); background: var(--rd-warn-soft); }
+.rd-issue-main { flex: 1; min-width: 0; }
 
 .rd-issue-pos { font-size: 10.5px; color: var(--rd-dim); white-space: nowrap; }
 
@@ -464,13 +498,13 @@
 
 .rd-issue-title {
   margin: 5px 0 0;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
 }
 
 .rd-issue-msg {
   margin: 3px 0 0;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--rd-dim);
   word-break: break-word;
 }
@@ -487,7 +521,7 @@
 }
 
 .rd-issue-more {
-  padding: 8px 0 2px;
+  padding: 6px 14px 8px;
   font-size: 11px;
   color: var(--rd-dim);
   text-align: center;
@@ -496,13 +530,15 @@
 /* ---------- 原始输出 ---------- */
 
 .rd-raw { overflow: hidden; }
+/* 嵌入问题卡底部时只留上分隔线。 */
+.rd-raw-embedded { border-top: 1px solid var(--rd-line); }
 
 .rd-raw-head {
   display: flex;
   align-items: center;
   gap: 8px;
   width: 100%;
-  padding: 9px 12px;
+  padding: 11px 16px;
   border: none;
   background: transparent;
   color: var(--rd-fg);
@@ -553,6 +589,7 @@
 }
 
 .rd-empty p { margin: 0; font-size: 11.5px; max-width: 300px; }
+.rd-empty-run { margin-top: 12px; width: 100%; max-width: 220px; }
 
 .rd-empty-icon { width: 34px; height: 34px; opacity: 0.5; margin-bottom: 4px; }
 
@@ -573,7 +610,37 @@
 }
 
 .rd-trunc-note {
-  margin: -2px 0 8px;
+  margin: 0;
+  padding: 8px 14px 0;
   font-size: 11px;
   color: var(--rd-warn);
+}
+
+/* ---------- 窄面板适配（小窗口 / 手机宽度） ---------- */
+
+@container (max-width: 400px) {
+  .rd-root {
+    padding: 14px 12px 22px;
+    gap: 12px;
+  }
+
+  .rd-head { flex-wrap: wrap; }
+
+  /* 评分卡竖排：评分环居中在上，信息区占满整行——标题不再被挤成竖排，
+     统计与元信息行也有足够宽度自然换行。 */
+  .rd-score {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .rd-ring { align-self: center; }
+
+  /* 问题卡标题行允许换行：「一键修复」掉到下一行，不再挤压标题。 */
+  .rd-findings-head { flex-wrap: wrap; }
+
+  /* 诊断行允许换行：单条修复按钮掉到内容下方，与正文左缘对齐。 */
+  .rd-issue { flex-wrap: wrap; }
+  .rd-issue .rd-btn { margin-left: 24px; }
 }
