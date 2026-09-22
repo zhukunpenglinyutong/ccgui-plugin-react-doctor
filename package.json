@@ -1,6 +1,6 @@
 {
   "name": "ccgui-plugin-react-doctor",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "CC GUI 插件：一键运行 npx react-doctor@latest 代码体检，面板展示评分/问题分组/原始输出",
   "type": "module",

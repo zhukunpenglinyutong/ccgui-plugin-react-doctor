@@ -1,7 +1,7 @@
 {
   "id": "react-doctor",
   "name": "React Doctor",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "sdkVersion": "^0.3",
   "minAppVersion": "1.0.0",
   "author": "ccgui",

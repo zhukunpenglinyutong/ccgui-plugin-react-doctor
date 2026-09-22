@@ -27,30 +27,11 @@ const activate: PluginActivate = (ctx) => {
     return h.createElement("div", { ref, className: "react-doctor-root" });
   }
 
-  // tab 图标渲染在宿主树里：用 ctx.react 手工建 SVG（图标组件库里的
-  // 函数组件产自插件 React，交给宿主树渲染违反双树规则）。
-  const svgProps = {
-    viewBox: "0 0 24 24",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: 2,
-    strokeLinecap: "round",
-    strokeLinejoin: "round",
-    "aria-hidden": true,
-  } as const;
-
+  // tab 图标不注册，交给宿主回退：marketplace 安装会按 manifest 的
+  // `icon`（docs/icon.png）把索引品牌图落到插件目录，本地目录安装直接
+  // 读仓库里的同一张图——列表、详情页、页签三处同一条链。
   ctx.ui.registerPanelTab({
     label: () => copy(ctx.host.locale).tabLabel,
-    icon: ({ className }) =>
-      h.createElement(
-        "svg",
-        { ...svgProps, className },
-        h.createElement("path", { d: "M11 2v2" }),
-        h.createElement("path", { d: "M5 2v2" }),
-        h.createElement("path", { d: "M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1" }),
-        h.createElement("path", { d: "M8 15a6 6 0 0 0 12 0v-3" }),
-        h.createElement("circle", { cx: 20, cy: 10, r: 2 }),
-      ),
     component: PanelContainer,
   });
 
