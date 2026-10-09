@@ -13,7 +13,7 @@ import type { Diagnostic, Report } from "./report";
  * 再用 node -e 分 ≤50 条/页读出（每页 ~30KB，安全），总量封顶 300 条。
  */
 
-export type RunPhase = "idle" | "running" | "done" | "error";
+export type RunPhase = "idle" | "running" | "done" | "error" | "noproject";
 
 export interface RunState {
   phase: RunPhase;
@@ -212,6 +212,10 @@ export async function runScan(): Promise<void> {
 
   if (head.error || !head.ok) {
     const msg = head.error?.message ?? head.error?.reason?.message ?? t.errUnknown;
+    if (/No React or Three\.js project found/i.test(msg) || /No React or Three\.js project found/i.test(scanStderr)) {
+      finish({ phase: "noproject", startedAt: null, ranAt: Date.now(), errorMessage: null, report: null, rawOutput: scanStderr });
+      return;
+    }
     fail(t.errScan(msg), scanStderr);
     return;
   }
