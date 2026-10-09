@@ -27,8 +27,11 @@ export interface Copy {
   statusRunning: string;
   statusDone: string;
   statusError: string;
+  statusNoProject: string;
   emptyTitle: string;
   emptyBody: string;
+  noProjectTitle: string;
+  noProjectBody: (workspacePath: string) => string;
   scoreTitle: string;
   statErrors: string;
   statWarnings: string;
@@ -75,8 +78,12 @@ export function copy(locale: string): Copy {
       statusRunning: "运行中",
       statusDone: "完成",
       statusError: "失败",
+      statusNoProject: "非 React 项目",
       emptyTitle: "尚未运行体检",
       emptyBody: "点击「运行体检」对当前工作区执行 react-doctor 扫描，结果会显示在这里。",
+      noProjectTitle: "当前工作区不是 React / Three.js 项目",
+      noProjectBody: (workspacePath) =>
+        `已扫描目录：${workspacePath || "当前工作区"}。react-doctor 只体检前端项目——该目录（或其子目录）需要有包含 react、react-dom 或 three 依赖的 package.json。请在 CC GUI 中切换到前端项目工作区后再运行体检。`,
       scoreTitle: "健康评分",
       statErrors: "错误",
       statWarnings: "警告",
@@ -119,8 +126,12 @@ export function copy(locale: string): Copy {
     statusRunning: "Running",
     statusDone: "Done",
     statusError: "Failed",
+    statusNoProject: "Not a React project",
     emptyTitle: "No scan yet",
     emptyBody: "Run a scan to check this workspace with react-doctor. Results will appear here.",
+    noProjectTitle: "Not a React / Three.js project",
+    noProjectBody: (workspacePath) =>
+      `Scanned directory: ${workspacePath || "current workspace"}. react-doctor only checks frontend projects - it expects a package.json with react, react-dom, or three in this directory or a subdirectory. Switch to a frontend workspace and run again.`,
     scoreTitle: "Health score",
     statErrors: "Errors",
     statWarnings: "Warnings",

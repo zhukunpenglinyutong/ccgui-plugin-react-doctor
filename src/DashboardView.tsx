@@ -80,6 +80,9 @@ function StatusBadge({ state, t }: { state: RunState; t: Copy }) {
       </span>
     );
   }
+  if (state.phase === "noproject") {
+    return <span className="rd-badge">{t.statusNoProject}</span>;
+  }
   return <span className="rd-badge">{t.statusIdle}</span>;
 }
 
@@ -313,8 +316,20 @@ export default function DashboardView() {
       {!state.report && (state.hydrated || state.phase === "running") && (
         <div className="rd-card rd-empty">
           <StethoscopeIcon className="rd-empty-icon" />
-          <h3>{state.phase === "running" ? t.statusRunning : t.emptyTitle}</h3>
-          <p>{state.phase === "running" ? t.runningHint : t.emptyBody}</p>
+          <h3>
+            {state.phase === "running"
+              ? t.statusRunning
+              : state.phase === "noproject"
+                ? t.noProjectTitle
+                : t.emptyTitle}
+          </h3>
+          <p>
+            {state.phase === "running"
+              ? t.runningHint
+              : state.phase === "noproject"
+                ? t.noProjectBody(state.workspacePath)
+                : t.emptyBody}
+          </p>
           <div className="rd-empty-run">
             <RunButton state={state} t={t} variant="hero" />
           </div>
